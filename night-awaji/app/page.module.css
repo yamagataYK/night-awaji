@@ -1,0 +1,78 @@
+/* ラッパー */
+.hero {
+    position: relative;
+}
+
+.container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("../public/mainView.jpeg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(1, 0, 23, 0.20);
+    z-index: 1;
+}
+
+.header,
+.first_text {
+    position: relative;
+    z-index: 2;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 100px 0;
+
+    h1 {
+        color: #FFF;
+        font-size: 30px;
+    }
+}
+
+.experience {
+    background-color: aqua;
+    color: #FFF;
+    font-size: 30px;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+
+.first_text {
+    position: absolute;
+    right: 40px;
+    bottom: 80px;
+    color: #fff;
+    font-size: 50px;
+    color: #FFF;
+}
+
+.int_Wrap {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    color: #FFF;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(14, 14, 14, 0.00) 0%, rgba(14, 14, 14, 0.60) 24.01%, rgba(14, 14, 14, 0.68) 72.12%, rgba(14, 14, 14, 0.72) 100%);
+    padding-top: 400px;
+
+    h3 {
+        font-size: 30px;
+    }
+
+    p {
+        margin-top: 20px;
+        font-size: 18px;
+    }
+}
