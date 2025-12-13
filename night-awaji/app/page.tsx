@@ -40,7 +40,7 @@ export default function Home() {
 
       <section className={styles.info_wrap}>
 
-        <p className={styles.text}>かかかか</p>
+        <p className={styles.text}>まだ作業中です</p>
 
       </section>
 
