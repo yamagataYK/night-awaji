@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    gap: 280px;
+    align-items: center;
+    margin-left: 100px;
+
+    h1 {
+        font-size: 32px;
+    }
+}
+
+.ul {
+    display: flex;
+    font-size: 20px;
+    gap: 40px;
+
+    li {
+        background-color: #FFF;
+        padding: 8px;
+        border-radius: 50px;
+    }
+}
