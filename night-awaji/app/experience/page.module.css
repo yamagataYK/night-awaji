@@ -1,18 +1,23 @@
+:global(.leaflet-container) {
+    background: linear-gradient(180deg, #344268 0%, #618EAC 100%);
+}
+
 .header {
     display: flex;
-    gap: 280px;
+    gap: 220px;
     align-items: center;
-    margin-left: 100px;
+    margin: 30px 0 0 100px;
 
-    h1 {
+    h1>a {
         font-size: 32px;
+        color: #FFF;
     }
 }
 
 .ul {
     display: flex;
     font-size: 20px;
-    gap: 40px;
+    gap: 36px;
 
     li {
         background-color: #FFF;

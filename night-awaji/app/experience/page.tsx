@@ -1,8 +1,8 @@
 "use client";
-import styles from "./page.module.css"
+import "leaflet/dist/leaflet.css";
+import styles from "./page.module.css";
 import { useMemo, useState } from "react";
 import { MapContainer, ImageOverlay, Marker } from 'react-leaflet';
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 type XY = [number, number]; // CRS.Simple 用（画像上の座標）
@@ -30,34 +30,32 @@ export default function Experience() {
 
     return (
         <>
-            <div className={styles.}>
-                <MapContainer
-                    crs={L.CRS.Simple}
-                    center={center}
-                    zoom={0}
-                    minZoom={-2}
-                    maxZoom={4}
-                    style={{ height: "100vh", width: "100%" }}
-                >
-                    <ImageOverlay url="/Map.png" bounds={bounds} />
-                    {/* 画像上の座標でマーカー */}
-                    <Marker position={pos} icon={myIcon} />
+            <MapContainer
+                crs={L.CRS.Simple}
+                center={center}
+                zoom={0}
+                minZoom={-2}
+                maxZoom={4}
+                style={{ height: "100vh", width: "100%" }}
+            >
+                <ImageOverlay url="/Map.png" bounds={bounds} />
+                {/* 画像上の座標でマーカー */}
+                <Marker position={pos} icon={myIcon} />
 
 
 
-                    <header className={styles.header}>
-                        <h1><a href="/">夜の淡路島</a></h1>
-                        <nav>
-                            <ul className={styles.ul}>
-                                <li><button type="button">未開スポット</button></li>
-                                <li><button type="button">解放スポット</button></li>
-                                <li><button type="button">イベントスポット</button></li>
-                            </ul>
-                        </nav>
-                    </header>
+                <header className={styles.header}>
+                    <h1><a href="/">夜の淡路島</a></h1>
+                    <nav>
+                        <ul className={styles.ul}>
+                            <li><button type="button">未開スポット</button></li>
+                            <li><button type="button">解放スポット</button></li>
+                            <li><button type="button">イベントスポット</button></li>
+                        </ul>
+                    </nav>
+                </header>
 
-                </MapContainer >
-            </div>
+            </MapContainer >
         </>
     )
 }
