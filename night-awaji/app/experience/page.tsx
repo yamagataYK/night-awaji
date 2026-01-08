@@ -4,18 +4,12 @@ import styles from "./page.module.css";
 import { useMemo, useState } from "react";
 import { MapContainer, ImageOverlay, Marker } from 'react-leaflet';
 import L from "leaflet";
+import Image from "next/image";
 
-type XY = [number, number]; // CRS.Simple 用（画像上の座標）
+
 
 export default function Experience() {
 
-    const bounds: [XY, XY] = useMemo(() => [[0, 0], [1100, 1100]], []);
-
-
-    const center: XY = useMemo(() => [500, 500], []);
-
-    // 画像の任意位置自分の座標
-    const [pos] = useState<XY>([520, 430]);
 
     const myIcon = useMemo(
         () =>
@@ -33,14 +27,13 @@ export default function Experience() {
             <MapContainer
                 crs={L.CRS.Simple}
                 center={center}
-                zoom={0}
+                zoom={-1}
                 minZoom={-2}
                 maxZoom={4}
                 style={{ height: "100vh", width: "100%" }}
             >
                 <ImageOverlay url="/Map.png" bounds={bounds} />
-                {/* 画像上の座標でマーカー */}
-                <Marker position={pos} icon={myIcon} />
+
 
 
 
@@ -48,9 +41,33 @@ export default function Experience() {
                     <h1><a href="/">夜の淡路島</a></h1>
                     <nav>
                         <ul className={styles.ul}>
-                            <li><button type="button">未開スポット</button></li>
-                            <li><button type="button">解放スポット</button></li>
-                            <li><button type="button">イベントスポット</button></li>
+                            <li><button type="button">
+                                <Image
+                                    src="/unc_pin.svg"
+                                    width={26}
+                                    height={36}
+                                    alt="ピンのイラスト"
+                                />
+                                未開スポット
+                            </button></li>
+                            <li><button type="button">
+                                <Image
+                                    src="/release_pin.svg"
+                                    width={32}
+                                    height={42}
+                                    alt="ピンのイラスト"
+                                />
+                                解放スポット
+                            </button></li>
+                            <li><button type="button">
+                                <Image
+                                    src="/event_pin.svg"
+                                    width={32}
+                                    height={42}
+                                    alt="ピンのイラスト"
+                                />
+                                イベントスポット
+                            </button></li>
                         </ul>
                     </nav>
                 </header>
@@ -59,3 +76,5 @@ export default function Experience() {
         </>
     )
 }
+
+
