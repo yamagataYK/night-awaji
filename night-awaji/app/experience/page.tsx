@@ -1,10 +1,11 @@
 "use client";
+
 import "leaflet/dist/leaflet.css";
 import styles from "./page.module.css";
 import { useMemo, useEffect, useState } from "react";
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import L from "leaflet";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+import Sidebar from "@/components/Sidebar";
 
 
 type Spot = {
@@ -14,35 +15,30 @@ type Spot = {
     lng: number;
 };
 
+type DrawerType = "unopened" | "released" | "event" | null;
+
+
+const LeafletMap = dynamic(() => import("./Leaflet"), { ssr: false });
 
 export default function Experience() {
     const [latlng, setLatlng] = useState<{ lat: number; lng: number } | null>(null);
-    const [accuracy, setAccuracy] = useState<number | null>(null);
-    const [geoError, setGeoError] = useState<string | null>(null);
+
+    const [open, setOpen] = useState(false);
+    const [type, setType] = useState<DrawerType>(null);
 
     useEffect(() => {
 
-
         const id = navigator.geolocation.watchPosition(
             (p) => {
-                setGeoError(null);
                 setLatlng({ lat: p.coords.latitude, lng: p.coords.longitude });
-                setAccuracy(p.coords.accuracy ?? null);
-            },
-            (err) => {
-                setGeoError(err.message);
-            },
-            {
-                enableHighAccuracy: true,
-                maximumAge: 3000,
-                timeout: 10000,
+
             }
         );
 
         return () => navigator.geolocation.clearWatch(id);
     }, []);
 
-    //スポット　DBから取得に置き換え
+
     const spots: Spot[] = useMemo(
         () => [
             { id: "1", name: "スポットA", lat: 34.4000, lng: 134.8000 },
@@ -51,34 +47,22 @@ export default function Experience() {
         ],
         []
     );
-    //  ピンアイコン
-    const uncIcon = useMemo(
-        () =>
-            L.icon({
-                iconUrl: "/unc_pin.svg",
-                iconSize: [32, 42],
-                iconAnchor: [13, 36],
-            }),
-        []
-    );
-    //  現在地アイコン
-    const myIcon = useMemo(
-        () =>
-            L.icon({
-                iconUrl: "/myIcon.png",
-                iconSize: [25, 25],
-                iconAnchor: [15, 30],
-            }),
-        []
-    );
+
+    const openSidebar = (t: Exclude<DrawerType, null>) => {
+        setType(t);
+        setOpen(true);
+    };
+
+
 
     return (
         <>
+            <LeafletMap spots={spots} latlng={latlng} />
             <header className={styles.header}>
                 <h1><a href="/">夜の淡路島</a></h1>
                 <nav>
                     <ul className={styles.ul}>
-                        <li><button type="button">
+                        <li><button type="button" onClick={() => openSidebar("unopened")}>
                             <Image
                                 src="/unc_pin.svg"
                                 width={26}
@@ -87,7 +71,7 @@ export default function Experience() {
                             />
                             未開スポット
                         </button></li>
-                        <li><button type="button">
+                        <li><button type="button" onClick={() => openSidebar("released")}>
                             <Image
                                 src="/release_pin.svg"
                                 width={32}
@@ -96,7 +80,7 @@ export default function Experience() {
                             />
                             解放スポット
                         </button></li>
-                        <li><button type="button">
+                        <li><button type="button" onClick={() => openSidebar("event")}>
                             <Image
                                 src="/event_pin.svg"
                                 width={32}
@@ -108,43 +92,19 @@ export default function Experience() {
                     </ul>
                 </nav>
             </header >
-            <MapContainer
-                center={[spots[0].lat, spots[0].lng]}
-                zoom={11}
-                style={{ height: "100vh", width: "100%" }}
+
+            <Sidebar
+                open={open}
+                onClose={() => setOpen(false)}
+                title={type === "unopened" ? "未開スポット" : type === "released" ? "解放スポット" : "イベントスポット"}
+                side="left"
             >
-                <TileLayer
-                    attribution='&copy; OpenStreetMap contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
 
-                {/* スポット */}
-                {spots.map((s) => (
-                    <Marker key={s.id} position={[s.lat, s.lng]} icon={uncIcon} />
-                ))}
-
-                {/* ✅ 現在地（位置取れたら表示） */}
-                {latlng && <Marker position={[latlng.lat, latlng.lng]} icon={myIcon} />}
+            </Sidebar>
 
 
-
-
-
-
-
-
-
-            </MapContainer>
-
-            <div className={styles.geoBox}>
-                <div>
-                    現在地：
-                    {latlng ? `${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}` : "取得中..."}
-                </div>
-                <div>精度：{accuracy !== null ? `${Math.round(accuracy)}m` : "-"}</div>
-                {geoError && <div>⚠️ {geoError}</div>}
-            </div>
         </>
     )
 }
+
 
