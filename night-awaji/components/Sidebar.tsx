@@ -36,7 +36,7 @@ export default function Sidebar({
                 style={{ width: `${widthPx}px` }}
                 aria-hidden={!open}
             >
-                <div className={styles.header}>
+                <div className={styles.titleWrap}>
                     <h2 className={styles.title}>{title}</h2>
                     <button className={styles.closeBtn} onClick={onClose} aria-label="閉じる">
                         ×

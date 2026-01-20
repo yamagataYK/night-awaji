@@ -3,25 +3,41 @@
 import { useMemo } from "react";
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import L from "leaflet";
+import { Spot, SpotType } from "./types";
 
-type Spot = {
-    id: string;
-    name: string;
-    lat: number;
-    lng: number;
-};
 
 type Props = {
     spots: Spot[];
     latlng: { lat: number; lng: number } | null;
+    onSpotClick: (spot: Spot) => void;
 };
 
-export default function LeafletMap({ spots, latlng }: Props) {
+export default function LeafletMap({ spots, latlng, onSpotClick }: Props) {
     //  ピンアイコン
     const uncIcon = useMemo(
         () =>
             L.icon({
                 iconUrl: "/unc_pin.svg",
+                iconSize: [35, 45],
+                iconAnchor: [13, 36],
+            }),
+        []
+    );
+
+    const releasedIcon = useMemo(
+        () =>
+            L.icon({
+                iconUrl: "/release_pin.svg",
+                iconSize: [35, 45],
+                iconAnchor: [13, 36],
+            }),
+        []
+    );
+
+    const eventIcon = useMemo(
+        () =>
+            L.icon({
+                iconUrl: "/event_pin.svg",
                 iconSize: [35, 45],
                 iconAnchor: [13, 36],
             }),
@@ -39,6 +55,16 @@ export default function LeafletMap({ spots, latlng }: Props) {
         []
     );
 
+
+    const iconByType = (type: SpotType) => {
+        if (type === "unopened") return uncIcon;
+        if (type === "released") return releasedIcon;
+        return eventIcon;
+    };
+
+    const center: [number, number] =
+        latlng ? [latlng.lat, latlng.lng] : [spots[0].lat, spots[0].lng];
+
     return (
         <MapContainer
             center={[spots[0].lat, spots[0].lng]}
@@ -51,7 +77,14 @@ export default function LeafletMap({ spots, latlng }: Props) {
             />
 
             {spots.map((s) => (
-                <Marker key={s.id} position={[s.lat, s.lng]} icon={uncIcon} />
+                <Marker
+                    key={s.id}
+                    position={[s.lat, s.lng]}
+                    icon={iconByType(s.type)}
+                    eventHandlers={{
+                        click: () => onSpotClick(s),
+                    }}
+                />
             ))}
 
             {latlng && <Marker position={[latlng.lat, latlng.lng]} icon={myIcon} />}

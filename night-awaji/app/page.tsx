@@ -2,6 +2,8 @@ import styles from "./page.module.css"
 import Link from "next/link";
 import Image from "next/image";
 import SecondView from "../public/secondView.jpeg"
+import MainView from "../public/mainView.jpeg"
+import SectionView from "../public/section.jpeg"
 
 
 
@@ -39,9 +41,30 @@ export default function Home() {
       </div>
 
       <section className={styles.info_wrap}>
+        <div className={styles.inner}>
+          <div className={styles.photoGrid}>
 
-        <p className={styles.text}>まだ作業中です</p>
+            <div className={`${styles.photo} ${styles.photoTop}`}>
+              <Image src={MainView} alt="top" />
+            </div>
 
+
+            <div className={`${styles.photo} ${styles.photoMid}`}>
+              <Image src={SecondView} alt="mid" />
+            </div>
+
+
+            <div className={`${styles.photo} ${styles.photoBottom}`}>
+              <Image src={SectionView} alt="bottom" />
+            </div>
+          </div>
+          <div className={styles.textBox}>
+            <p className={styles.info_text}>夜景・海・橋・自然が揃っていて、渋滞も
+              少なく、<br />
+              夜の海沿いドライブやツーリングが最高</p>
+          </div>
+        </div>
+        <p className={styles.sub_title}>淡路島にはこんな魅力がある。</p>
       </section>
 
 
